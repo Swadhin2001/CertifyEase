@@ -1,4 +1,5 @@
 "use client";
+import axios from 'axios'
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -12,9 +13,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { modifyPdf } from "@/utils/generatePdf";
-import { useState } from "react";
-import pdfFile from "@/assets/TDC.pdf";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -24,7 +22,6 @@ const formSchema = z.object({
 });
 
 const CertificateForm = () => {
-    const [modifiedPdfSrc, setModifiedPdfSrc] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,19 +34,22 @@ const CertificateForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setModifiedPdfSrc(await modifyPdf (values.name, values.date, values.CourseName))
+    try {
+      await axios.post ('http://localhost:3000/userCertificate', {
+        email: values.email,
+        fileName: values.name,
+        date: values.date,
+        courseName: values.CourseName,
+      })
+      console.log ("success");      
+    } catch (error) {
+        console.log (error);
+    }
   }
 
 
   return (
-    <>
-        <div>
-        {modifiedPdfSrc ? (
-          <embed src={modifiedPdfSrc} type="application/pdf" width="100%" height="800px" />
-        ) : (
-          <iframe src={pdfFile} width="100%" height="800px" />
-        )}
-      </div>
+    <>        
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField

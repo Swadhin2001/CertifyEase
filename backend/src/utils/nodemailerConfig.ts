@@ -1,4 +1,6 @@
 import nodemailer from 'nodemailer'
+import 'dotenv/config'
+
 
 export const transporter = nodemailer.createTransport ({
     host: 'smtp.gmail.com',
@@ -10,7 +12,7 @@ export const transporter = nodemailer.createTransport ({
 
 transporter.verify ((err, success)=>{
     if (err){
-        console.log (err);
+        console.log ("Nodemailer error: ",err);
     }
     else{
         console.log ("Ready for message")

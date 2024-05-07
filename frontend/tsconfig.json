@@ -27,6 +27,6 @@
       ]
     }
   },
-  "include": ["src"],
+  "include": ["src", "../backend/src/utils/driveConfig.ts", "../backend/src/utils/generatePdf.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

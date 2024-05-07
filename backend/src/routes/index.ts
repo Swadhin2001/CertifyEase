@@ -1,5 +1,5 @@
 import express from "express"
-import { signup } from "../controllers/signup.controller";
+import { signup } from "../controllers/createtodb.controller";
 
 const router = express.Router();
 
@@ -9,3 +9,5 @@ router.use (express.json());
 
 
 router.route('/userCertificate').post(signup);
+
+export {router}
