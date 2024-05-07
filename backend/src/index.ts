@@ -4,6 +4,7 @@ import {router} from './routes/index'
 import connectDB from './db/index'
 const app = express ();
 import cors from 'cors';
+import { User } from "./schema/user.model";
 
 
 const port = 3000 || process.env.PORT;
@@ -21,6 +22,23 @@ const upload = multer({ storage: storage });
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
+
+app.get('/users/:email', async (req, res) => {
+  try {
+    const email = req.params.email;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 
 app.use ('/', upload.single('file'), router);
   

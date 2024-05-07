@@ -13,6 +13,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast"
+import { useState } from 'react';
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -22,7 +24,7 @@ const formSchema = z.object({
 });
 
 const CertificateForm = () => {
-
+  const [email, setEmail] = useState <String>("");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,7 +34,7 @@ const CertificateForm = () => {
       date: "",
     },
   });
-
+  
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await axios.post ('http://localhost:3000/userCertificate', {
@@ -41,17 +43,36 @@ const CertificateForm = () => {
         date: values.date,
         courseName: values.CourseName,
       })
+      setEmail (values.email);
       console.log ("success");      
     } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "User already exist",
+        })
         console.log (error);
     }
   }
 
+  const { toast } = useToast()
+  const  showCertificate = async()=>{
+    try {
+      const data = await axios.get (`http://localhost:3000/users/${email}`)
+      const user = data.data;
+      window.open(user.certificateLink, '_blank');
+      toast({
+        title: "Certificate Url",
+        description: `${user.certificateLink}`,
+      })
+    } catch (error) {
+      console.log (error);
+    }
+  }
 
   return (
     <>        
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-[30%] ">
           <FormField
             control={form.control}
             name="name"
@@ -105,6 +126,11 @@ const CertificateForm = () => {
             )}
           />
           <Button type="submit">Submit</Button>
+          <Button
+          className='mx-3'
+          onClick={showCertificate}>
+          Show Certificate
+          </Button>
         </form>
       </Form>
     </>

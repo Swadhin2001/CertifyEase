@@ -41,10 +41,9 @@ export async function uploadBasic(fileName: string, modifiedPdfBytes: Uint8Array
           });
         // console.log('File url:',`https://drive.google.com/file/d/${file.data.id}/view?usp=sharing`);
           sendOTP (email,`https://drive.google.com/file/d/${file.data.id}/view?usp=sharing`);
-          const user = await User.findOne({ email });
-          if (!user) return console.log('User not found');
-          user.certificateLink = `https://drive.google.com/file/d/${file.data.id}/view?usp=sharing`;
-          user?.save();
+          const certificateLink = `https://drive.google.com/file/d/${file.data.id}/view?usp=sharing`;
+          const user = new User ({email,certificateLink});
+          user.save();
         return file.data.id;
     } catch (err) {
         throw err;

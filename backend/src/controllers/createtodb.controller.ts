@@ -10,13 +10,10 @@ const signup: RequestHandlerParams = asyncHandler (async (req: Request, res: Res
         const {email,fileName,date,courseName } = req.body
         const userFind = await User.findOne({ email });
         if (userFind){
-            res.send("User Already Exists");
-            return;
+            return res.status(400).send("User Already Exists");
         }
 
         await modifyPdf(fileName,date,courseName, email)
-        const user = new User({ email});
-        user.save();
         res.status(201).send('Certificate send successfully!');
     } 
     catch (error) {
