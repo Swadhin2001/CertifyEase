@@ -1,12 +1,12 @@
-import './App.css'
+import CertificateForm from "./components/form";
 
 function App() {
-
+  
   return (
     <>
-      <h1>Hello World</h1>
+      <CertificateForm/>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
