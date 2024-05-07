@@ -59,11 +59,11 @@ const CertificateForm = () => {
     try {
       const data = await axios.get (`http://localhost:3000/users/${email}`)
       const user = data.data;
-      window.open(user.certificateLink, '_blank');
       toast({
         title: "Certificate Url",
         description: `${user.certificateLink}`,
       })
+      window.open(user.certificateLink, '_blank');
     } catch (error) {
       console.log (error);
     }
