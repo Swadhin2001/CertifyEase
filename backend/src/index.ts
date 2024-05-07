@@ -4,6 +4,7 @@ import connectDB from './db/index'
 const app = express ();
 import cors from 'cors';
 import { User } from "./schema/user.model";
+import 'dotenv/config'
 
 
 const port = 3000 || process.env.PORT;
