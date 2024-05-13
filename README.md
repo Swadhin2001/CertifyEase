@@ -1,4 +1,4 @@
-### Tutedude Assignment
+### CertifyEase
 
 Welcome to the Certificate Request Management System! This system provides an interface for admins to view and manage certificate requests, generate certificates automatically, and store the generated certificate links along with the student's email in a database.
 
